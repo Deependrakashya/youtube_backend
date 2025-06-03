@@ -3,9 +3,14 @@
   "version": "1.0.0",
   "description": "clone of full  youtube backend ",
   "main": "server.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon src/server.js"
   },
   "author": "Deependra Kashyap",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.10",
+    "prettier": "^3.5.3"
+  }
 }
