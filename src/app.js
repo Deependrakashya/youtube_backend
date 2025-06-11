@@ -15,7 +15,7 @@ app.use(express.urlencoded({extended :true, limit:"16kb"}));
 // allow to share data from public folder
 app.use(express.static("public"));
 // conf for  cookie for CRUD on user browser
-app.use(cookieParser());
+app.use(cookieParser()); 
 
 
 export default app;
