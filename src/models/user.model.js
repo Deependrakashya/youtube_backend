@@ -18,14 +18,14 @@ const userShema = new Schema(
       lowercase: true,
       trim: true,
     },
-    full_name: {
+    fullName: {
       required: true,
       type: String,
       lowercase: true,
       trim: true,
       index: true,
     },
-    avataar: {
+    avatar: {
       type: String, //cloudnary
       required: true,
     },
@@ -43,13 +43,16 @@ const userShema = new Schema(
       type: String,
       required: [true],
     },
+     refreshToken: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
 // middle ware run just before saving data
 userShema.pre("save", async function (next) {
   if (this.isModified("password")) {
-    this.password = bcrypt.hash(this.password, 10);
+    this.password =  bcrypt.hash(this.password, 10);
   } else {
     return next();
   }
@@ -85,4 +88,4 @@ userShema.methods.generateRefreshToken = function () {
   );
 };
 
-export const User = mongoose.Schema("User", userShema);
+export const User = mongoose.model("User", userShema);
