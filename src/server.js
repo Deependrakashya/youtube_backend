@@ -1,4 +1,4 @@
-import app from "./app.js";
+import { app } from "./app.js";
 import dbConnection from "./db/db.js";
 dbConnection()
   .then(() => {

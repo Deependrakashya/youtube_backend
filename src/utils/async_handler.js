@@ -1,6 +1,6 @@
 // higher order func wich can take fn as paramter and retrun as well
  const asyncHandler =(requestHandler)=>{
-    (req,res,next)=>{
+  return  (req,res,next)=>{
         Promise.resolve(requestHandler(req, res, next)).catch((error)=>next(error))
     }
  }
