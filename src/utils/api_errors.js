@@ -25,7 +25,7 @@ class ApiErrors extends Error {
             statusCode: this.statusCode,
             success: this.success,
             errors: this.errors,
-            stack: this.stack
+            // stack: this.stack
         };
     }
 }

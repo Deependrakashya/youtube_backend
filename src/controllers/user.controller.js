@@ -3,17 +3,27 @@ import { ApiErrors } from "../utils/api_errors.js";
 import { User } from "../models/user.model.js";
 import { uploadFileOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/api_response.js";
-import cookie from "cookie-parser";
+import jwt from "jsonwebtoken";
 
-const generateAccessTokenAndRefressToken = async (user) => {
+const generateAccessTokenAndRefreshToken = async (userId) => {
+
+
   try {
-    const accesToken = await user.generateAccessToken(user._id);
-    const refereshToken = await user.generateRefreshToken(user._id);
-    user.refreshToken = refereshToken;
+    const user = await User.findById(userId);
+    if (!user) {
+      throw new ApiErrors(404, "User not found");
+    }
+
+    const accessToken = await user.generateAccessToken();
+    const refreshToken = await user.generateRefreshToken();
+    user.accesToken = accessToken;
+    user.refreshToken = refreshToken;
     await user.save({ validateBeforeSave: false });
-    return { accesToken, refereshToken };
+
+    return { accessToken, refreshToken };
   } catch (error) {
-    throw new ApiErrors(500, "Failed to generate Tokens");
+    console.error("Failed to generate tokens:", error);
+    throw new ApiErrors(500, "Failed to generate tokens", error);
   }
 };
 
@@ -53,16 +63,16 @@ const registerUser = asyncHandler(async (req, res) => {
   const coverImage = await uploadFileOnCloudinary(coverImageLocalPath);
   // console.log("coverImage cloudinary : ", coverImage);
 
- const user = new User({
-  fullName,
-  username: username.toLowerCase(),
-  email,
-  password,
-  avatar: avatar.url,
-  coverImage: coverImage?.url || "",
-});
+  const user = new User({
+    fullName,
+    username: username.toLowerCase(),
+    email,
+    password,
+    avatar: avatar.url,
+    coverImage: coverImage?.url || "",
+  });
 
-await user.save(); // ✅ ensures pre-save runs
+  await user.save(); // ✅ ensures pre-save runs
 
   const createdUser = await User.findById(user._id).select(
     "-password -refreshToken"
@@ -86,8 +96,8 @@ const logInUser = asyncHandler(async (req, res) => {
   // send cookie
   const { email, username, password } = req.body;
 
-  console.log(email);
-  
+  // console.log(email);
+
   if (!(username || email)) {
     throw new ApiErrors(400, "username or email is required ");
   }
@@ -100,15 +110,13 @@ const logInUser = asyncHandler(async (req, res) => {
   const isPasswordValid = await user.isPasswordCorrect(password);
 
   if (!isPasswordValid) {
-    throw new ApiErrors(401,"Invalid User Credentials ");
+    throw new ApiErrors(401, "Invalid User Credentials ");
   }
 
-  const { accesToken, refereshToken } =
-    await generateAccessTokenAndRefressToken(user);
+  const { accessToken, refreshToken } =
+    await generateAccessTokenAndRefreshToken(user);
 
-  const loggedInUser = await User.findById(user._id).select(
-    "-refreshToken -password"
-  );
+  const loggedInUser = await User.findById(user._id).select("-refreshToken -password");
 
   // for secuirty so that cookies should not be modifiable
   const options = {
@@ -117,12 +125,12 @@ const logInUser = asyncHandler(async (req, res) => {
   };
   return res
     .status(200)
-    .cookie("accessToken", accesToken, options)
-    .cookie("refereshToken", refereshToken, options)
+    .cookie("accessToken", accessToken, options)
+    .cookie("refreshToken", refreshToken, options)
     .json(
       new ApiResponse(
         200,
-        { user: loggedInUser, accesToken, refereshToken },
+        { user: loggedInUser, accessToken, refreshToken },
         "user LoggedIn Succefully"
       )
     );
@@ -133,7 +141,7 @@ const logOutUser = asyncHandler(async (req, res) => {
     req.user._id,
     {
       $set: {
-        refereshToken: undefined,
+        refreshToken: undefined,
       },
     },
     {
@@ -147,9 +155,50 @@ const logOutUser = asyncHandler(async (req, res) => {
   };
   return res
     .status(200)
-    .clearCookie("accesToken", options)
-    .clearCookie("refereshToken", options)
+    .clearCookie("accessToken", options)
+    .clearCookie("refreshToken", options)
     .json(new ApiResponse(200, {}, "user logged Out successfully"));
 });
 
-export { registerUser, logInUser, logOutUser };
+const refereshAccessToken = asyncHandler(async (req, res) => {
+  const incomingrefreshToken =
+    req.cookies.refreshToken || req.body.refreshToken;
+
+  if (!incomingrefreshToken) {
+    throw new ApiErrors(401, "unauthorised Access");
+  }
+  try {
+    const decodeToken = jwt.verify(
+      incomingrefreshToken,
+      process.env.REFRESH_TOKEN_SECRET
+    );
+    const user = await User.findById(decodeToken?._id);
+    if (!user) {
+      throw new ApiErrors(401, "invalid refresh token ");
+    }
+    const options = {
+      httpOnly: true,
+      secure: true,
+    };
+    const { accessToken, newrefreshToken } =
+      await generateAccessTokenAndRefreshToken(user._id);
+    return res
+      .status(200)
+      .cookie("accessToken", accessToken, options)
+      .cookie("refreshToken", newrefreshToken, options)
+      .json(
+        new ApiResponse(
+          200,
+          { accessToken, newrefreshToken },
+          "Access Token Refreshed"
+        )
+      );
+  } catch (error) {
+    throw new ApiErrors(
+      400,
+      error?.message || "refresh token could not generated "
+    );
+  }
+});
+
+export { registerUser, logInUser, logOutUser, refereshAccessToken };
