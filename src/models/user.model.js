@@ -31,7 +31,7 @@ const userShema = new Schema(
     },
     coverImage: {
       type: String, //cloudnary
-      required: true,
+      required: false,
     },
     watchHistory: [
       {
@@ -52,14 +52,16 @@ const userShema = new Schema(
 // middle ware run just before saving data
 userShema.pre("save", async function (next) {
   if (this.isModified("password")) {
-    this.password =  bcrypt.hash(this.password, 10);
+    this.password = await bcrypt.hash(this.password, 10);
   } else {
     return next();
   }
   next();
 });
 
+
 userShema.methods.isPasswordCorrect = async function (password) {
+  
   return await bcrypt.compare(password, this.password);
 };
 
