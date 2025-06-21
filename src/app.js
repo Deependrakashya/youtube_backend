@@ -25,6 +25,9 @@ app.use(cookieParser());
 import userRouter from "./routes/user.route.js";
 
 // route declaration
+app.get("/", (req, res) => {
+  res.send("Hello World ");
+});
 app.use("/api/v1/users/", userRouter);
 
 app.use(errorHandler);
