@@ -5,7 +5,10 @@ import errorHandler from "./utils/error_handler.js";
 const app = express();
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN || "*",
+     
+    origin: (origin, callback) => {
+      callback(null, origin); // allow any origin
+    },
     credentials: true,
   })
 );
