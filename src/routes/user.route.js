@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   changeCurrentUserPassword,
+  getUserChannelProfile,
   logInUser,
   logOutUser,
   refereshAccessToken,
@@ -44,5 +45,8 @@ router
     upload.single('coverImage'),
     updateCoverImage
   );
+  
+router.get("/channel/:username", getUserChannelProfile);
+
 
 export default router;

@@ -4,6 +4,7 @@ import { User } from "../models/user.model.js";
 import { uploadFileOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/api_response.js";
 import jwt from "jsonwebtoken";
+import { log } from "console";
 
 const generateAccessTokenAndRefreshToken = async (userId) => {
   try {
@@ -276,7 +277,7 @@ const updateCoverImage = asyncHandler(async (req, res) => {
 });
 const getUserChannelProfile = asyncHandler(async (req, res) => {
   const { username } = req.params;
-
+  log("username :", username);
   if (!username?.trim()) {
     throw new ApiErrors(400, "username is invalid ");
   }
@@ -349,5 +350,5 @@ export {
   updateUser,
   updateAvatar,
   updateCoverImage,
-  getUserChannelProfile
+  getUserChannelProfile,
 };
