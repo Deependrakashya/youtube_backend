@@ -7,6 +7,12 @@ import jwt from "jsonwebtoken";
 import { log } from "console";
 import mongoose from "mongoose";
 
+const homeRoute = asyncHandler(async (req, res) => {
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Hello World ", "Server is running "));
+});
+
 const generateAccessTokenAndRefreshToken = async (userId) => {
   try {
     const user = await User.findById(userId);
@@ -413,5 +419,6 @@ export {
   updateCoverImage,
   getUserChannelProfile,
   getUserWatchHistory,
-  getCurrentUser
+  getCurrentUser,
+  homeRoute
 };
