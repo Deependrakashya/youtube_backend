@@ -55,7 +55,7 @@ export const homeMessage = ` <!DOCTYPE html>
         <p style="margin-top: 30px;">
           Try hitting endpoints like:
           <br/>
-          <code>GET /api/v1/user</code> or <code>POST /api/v1/user</code>
+          <code>GET /api/v1/users</code> or <code>POST /api/v1/users</code>
         </p>
       </div>
     </body>
