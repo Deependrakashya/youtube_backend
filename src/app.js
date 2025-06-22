@@ -5,7 +5,6 @@ import errorHandler from "./utils/error_handler.js";
 const app = express();
 app.use(
   cors({
-     
     origin: (origin, callback) => {
       callback(null, origin); // allow any origin
     },
@@ -29,7 +28,12 @@ import userRouter from "./routes/user.route.js";
 
 // route declaration
 app.get("/", (req, res) => {
-  res.send("Hello World ");
+  res.send(`<div>
+    <h1> Hey There 👋🏻 !! </h1>
+    <h5>welcome to the my first Rest Api Project </h5>
+  <p>Use URL: <a href="https://youtube-backend-mu0n.onrender.com/api/v1/user" target="_blank">
+      https://youtube-backend-mu0n.onrender.com/api/v1/user
+    </a> for sending requests.</p> </div>`);
 });
 app.use("/api/v1/users/", userRouter);
 
