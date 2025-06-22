@@ -1,0 +1,339 @@
+{
+	"info": {
+		"_postman_id": "f62e0911-8a0e-49fe-9ab2-ba1e4df25144",
+		"name": "youtube_backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34611862"
+	},
+	"item": [
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\":\"email2@.com12\",\n    \"password\":\"oldPassword\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/users/login",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "register",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "fullName",
+							"value": "deependra kashyap",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "deependr",
+							"type": "text"
+						},
+						{
+							"key": "avatar",
+							"type": "file",
+							"src": "postman-cloud:///1f04edf1-f294-4fc0-937e-964e7ec53f5a"
+						},
+						{
+							"key": "email",
+							"value": "email2@.com12",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "12345678",
+							"type": "text"
+						},
+						{
+							"key": "coverImage",
+							"type": "file",
+							"src": "postman-cloud:///1f04edf2-940c-46f0-a18b-4bafe6d83fa2"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/users/register",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logout",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\n"
+				},
+				"url": {
+					"raw": "{{url}}/users/logout",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "refresh-token",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODRmODZhOGYyN2U5Nzk5ODdmOWRiYzIiLCJlbWFpbCI6ImVtYWlsMkAuY29tMTIiLCJ1c2VybmFtZSI6ImRlZXBlbmRyIiwiaWF0IjoxNzUwMDYwNDIwLCJleHAiOjE3NTAxNDY4MjB9.UVWeVJFc4HpRAvkWj3F0evVBDcHvB-kgeX7Rw_FCGKE",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"refereshToken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODRmODZhOGYyN2U5Nzk5ODdmOWRiYzIiLCJpYXQiOjE3NTAwOTU4NDUsImV4cCI6MTc1MDk1OTg0NX0.c_eLBJ-K93ThKr66XyI55Qb6JHYGlrdAPgIJIbnQVh8\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/users/refresh-token",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"refresh-token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update-password",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"oldPassword\":\"12345678\",\n   \"newPassword\":\"oldPassword\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/users/update-password",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"update-password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update-coverImage",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "coverImage",
+							"type": "file",
+							"src": "postman-cloud:///1f04edef-ede6-47a0-8653-bf860648b23b"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/users/update-coverimage",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"update-coverimage"
+					],
+					"query": [
+						{
+							"key": "coverImage",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update-avatar",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "avatar",
+							"type": "file",
+							"src": "postman-cloud:///1f04edef-38da-4d20-8235-2ba744d4cde7"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/users/update-avatar",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"update-avatar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "channel",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/users/channel/deependr",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"channel",
+						"deependr"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getuser",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODRmODZhOGYyN2U5Nzk5ODdmOWRiYzIiLCJlbWFpbCI6ImVtYWlsMkAuY29tMTIiLCJ1c2VybmFtZSI6ImRlZXBlbmRyIiwiaWF0IjoxNzUwNTMzNjM5LCJleHAiOjE3NTA2MjAwMzl9.55Uv0eKrNW3Knnl3EOUvbJoP1srMbUQbBAM3AmwCJNg",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\":\"email2@.com12\",\n    \"password\":\"oldPassword\"\n\n}"
+				},
+				"url": {
+					"raw": "{{liveserver}}/users/getuser",
+					"host": [
+						"{{liveserver}}"
+					],
+					"path": [
+						"users",
+						"getuser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "history",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\":\"email2@.com12\",\n    \"password\":\"oldPassword\"\n\n}"
+				},
+				"url": {
+					"raw": "{{url}}/users/history",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"history"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"value": "http://localhost:8000/api/v1",
+			"type": "default"
+		}
+	]
+}
