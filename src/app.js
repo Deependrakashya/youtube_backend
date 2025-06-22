@@ -25,16 +25,11 @@ app.use(cookieParser());
 // routes import
 
 import userRouter from "./routes/user.route.js";
+import { homeMessage } from "./constants.js";
 
 // route declaration
 app.get("/", (req, res) => {
-  res.send(`<div>
-    <h1> Hey There 👋🏻 !! </h1>
-    <h5>welcome to the my first Rest Api Project </h5>
-    <p>
-      Use this Postman collection: 
-      <a href= "../public/assets/youtube_backend.postman_collection.json" download>Download Postman Collection</a>
-    </p>`);
+  res.send(homeMessage);
 });
 app.use("/api/v1/users/", userRouter);
 
