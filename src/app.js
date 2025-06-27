@@ -11,7 +11,7 @@ app.use(
     credentials: true,
   })
 );
-
+app.use(express.json()); 
 // configrations
 
 app.use(express.json({ limit: "16kb" }));
@@ -26,12 +26,14 @@ app.use(cookieParser());
 
 import userRouter from "./routes/user.route.js";
 import { homeMessage } from "./constants.js";
+import blogRoute from "./routes/blog.route.js";
 
 // route declaration
 app.get("/", (req, res) => {
   res.send(homeMessage);
 });
 app.use("/api/v1/users/", userRouter);
+app.use("/api/v1/health/", blogRoute);
 
 app.use(errorHandler);
 
